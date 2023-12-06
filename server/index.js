@@ -8,6 +8,8 @@ import helmet from "helmet";
 import morgan from "morgan";
 import path from "path";
 import { fileURLToPath } from "url";
+import authRoutes from "./routes/auth.js"; // contains paths and routes of all kind of authentication features
+import userRoutes from "./routes/users.js"; // contains paths and routes of all kind of user features
 import { register } from "./controllers/auth.js";
 
 /* CONFIGURATIONS */
@@ -36,11 +38,19 @@ const storage = multer.diskStorage({
   },
 });
 
+const upload = multer({ storage });
+
 /*Register  :  Routes with file*/
 
-app.post("/auth/register", upload.single("picture"), register);
+app.post(
+  "/auth/register",
+  upload.single("picture"),
+  register
+); /*ideally this declaration should also be included in the ./routes/auth.js file , but only for register section where profile picture needs to be uploaded , we need to keep it here only , as we need to use "upload" function*/
 
-const upload = multer({ storage });
+/*Routes*/
+app.use("/auth", authRoutes);
+app.use("/users", userRoutes);
 
 /*MONGOOSE SETUP*/
 const PORT = process.env.PORT || 6001; // By default take port number from '.env' file , if that port doesn't work take port 6001
