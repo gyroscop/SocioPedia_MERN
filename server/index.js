@@ -10,7 +10,10 @@ import path from "path";
 import { fileURLToPath } from "url";
 import authRoutes from "./routes/auth.js"; // contains paths and routes of all kind of authentication features
 import userRoutes from "./routes/users.js"; // contains paths and routes of all kind of user features
+import postRoutes from "./routes/users.js"; // contains paths and routes of all kind of post functions
 import { register } from "./controllers/auth.js";
+import { createPost } from "./controllers/posts.js";
+import { verifyToken } from "./middleware/auth.js";
 
 /* CONFIGURATIONS */
 
@@ -48,9 +51,11 @@ app.post(
   register
 ); /*ideally this declaration should also be included in the ./routes/auth.js file , but only for register section where profile picture needs to be uploaded , we need to keep it here only , as we need to use "upload" function*/
 
+app.post("/posts", verifyToken, upload.single("picture"), createPost);
 /*Routes*/
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
+app.use("/posts", postRoutes);
 
 /*MONGOOSE SETUP*/
 const PORT = process.env.PORT || 6001; // By default take port number from '.env' file , if that port doesn't work take port 6001
