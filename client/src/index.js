@@ -41,3 +41,8 @@ root.render(
     </Provider>
   </React.StrictMode>
 );
+
+/*
+this code sets up a Redux store with state persistence using redux-persist, provides the store to the React application using react-redux, 
+and renders the main application component (<App />) within a PersistGate to ensure proper state rehydration.
+*/
