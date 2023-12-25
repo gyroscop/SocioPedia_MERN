@@ -52,7 +52,7 @@ const Navbar = () => {
           fontWeight="bold"
           fontSize="clamp(1rem, 2rem , 2.5rem)"
           color="primary"
-          onclick={() => navigate("/home")}
+          onClick={() => navigate("/home")}
           sx={{
             "&:hover": {
               color: primaryLight,
@@ -83,7 +83,7 @@ const Navbar = () => {
       {isNonMobileScreens ? (
         <FlexBetween gap="2rem">
           {/* Dark Mode + LightMode icon*/}
-          <IconButton onclick={() => dispatch(setMode())}>
+          <IconButton onClick={() => dispatch(setMode())}>
             {theme.palette.mode === "dark" ? (
               <DarkMode sx={{ fontSize: "25px" }} />
             ) : (
@@ -117,13 +117,13 @@ const Navbar = () => {
                 <Typography>{fullName}</Typography>
               </MenuItem>
 
-              <MenuItem onclick={() => dispatch(setLogout())}>Log out</MenuItem>
+              <MenuItem onClick={() => dispatch(setLogout())}>Log out</MenuItem>
             </Select>
           </FormControl>
         </FlexBetween>
       ) : (
         <IconButton
-          onclick={() => setIsMobileMenuToggled(!isMobileMenuToggled)}
+          onClick={() => setIsMobileMenuToggled(!isMobileMenuToggled)}
         >
           <Menu />
         </IconButton>
