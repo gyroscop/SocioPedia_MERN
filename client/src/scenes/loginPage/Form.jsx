@@ -80,16 +80,30 @@ const Form = () => {
     }
   };
 
-  {
-    /* Resume........ */
-  }
+  const login = async (values, onSubmitProps) => {
+    const loggedInResponse = await fetch("http://localhost:30001/auth/post", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(values),
+    });
+
+    const loggedIn = await loggedInResponse.json();
+    onSubmitProps.resetForm();
+    if (loggedIn) {
+      dispatch(
+        setLogin({
+          user: loggedIn.user,
+          token: loggedIn.token,
+        })
+      );
+      navigate("/home");
+    }
+  };
 
   const handleFormSubmit = async (values, onSubmitProps) => {
     if (isLogin) await login(values, onSubmitProps);
     if (isRegister) await register(values, onSubmitProps);
   };
-
-  ///***resume */
 
   return (
     <Formik
@@ -228,39 +242,43 @@ const Form = () => {
 
           {/* BUTTONS */}
 
-          <Box
-            fullWidth
-            type="submit"
-            sx={{
-              m: "2rem 0",
-              p: "1rem",
-              backgroundColor: palette.primary.main,
-              color: palette.background.alt,
-              "&:hover": { color: palette.primary.main },
-            }}
-          >
-            {isLogin ? "LOGIN" : "REGISTER"}
+          <Box>
+            <Button
+              fullWidth
+              type="submit"
+              sx={{
+                m: "2rem 0",
+                p: "1rem",
+                backgroundColor: palette.primary.main,
+                color: palette.background.alt,
+                "&:hover": { color: palette.primary.main },
+              }}
+            >
+              {isLogin ? "LOGIN" : "REGISTER"}
+            </Button>
+            <Typography
+              onClick={() => {
+                setPageType(isLogin ? "register" : "login");
+                resetForm();
+              }}
+              sx={{
+                textDecoration: "underline",
+                color: palette.primary.main,
+                "& : hover": {
+                  cursor: "pointer",
+                  color: palette.primary.light,
+                },
+              }}
+            >
+              {isLogin
+                ? "Don't have an account ? Sign up here."
+                : "Already have an account ? Login here."}
+            </Typography>
           </Box>
-          <Typography
-            onClick={() => {
-              setPageType(isLogin ? "register" : "login");
-              resetForm();
-            }}
-            sx={{
-              textDecoration: "underline",
-              color: palette.primary.main,
-              "& : hover": {
-                cursor: "pointer",
-                color: palette.primary.light,
-              },
-            }}
-          >
-            {isLogin
-              ? "Don't have an account ? Sign up here."
-              : "Already have an account ? Login here."}
-          </Typography>
         </form>
       )}
     </Formik>
   );
 };
+
+export default Form;
